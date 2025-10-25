@@ -1,8 +1,10 @@
 package br.com.movieflix.controller;
 
 import br.com.movieflix.controller.request.MovieRequest;
+import br.com.movieflix.controller.response.CategoryResponse;
 import br.com.movieflix.controller.response.MovieResponse;
 import br.com.movieflix.entity.Movie;
+import br.com.movieflix.mapper.CategoryMapper;
 import br.com.movieflix.mapper.MovieMapper;
 import br.com.movieflix.service.MovieService;
 import lombok.RequiredArgsConstructor;
@@ -33,5 +35,12 @@ public class MovieController {
                 .map(MovieMapper::toMovieResponse)
                 .toList());
 
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<MovieResponse> findById(@PathVariable Long id) {
+        return movieService.findById(id)
+                .map(movie -> ResponseEntity.ok().body(MovieMapper.toMovieResponse(movie)))
+                .orElse(ResponseEntity.notFound().build());
     }
 }
