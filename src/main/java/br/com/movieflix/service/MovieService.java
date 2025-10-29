@@ -75,4 +75,8 @@ public class MovieService {
         return movieRepository.findMovieByCategories(List.of(Category.builder().id(categoryId).build()));
 
     }
+
+    public void delete(Long movieId){
+        movieRepository.deleteById(movieId);
+    }
 }
