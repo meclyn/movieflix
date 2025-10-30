@@ -1,4 +1,7 @@
 package br.com.movieflix.repository;
 
-public interface UserRepository {
+import br.com.movieflix.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UserRepository  extends JpaRepository<User, Long> {
 }
