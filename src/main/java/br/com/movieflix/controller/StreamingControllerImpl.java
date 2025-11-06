@@ -7,6 +7,7 @@ import br.com.movieflix.entity.Streaming;
 import br.com.movieflix.mapper.StreamingMapper;
 import br.com.movieflix.service.StreamingService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -24,28 +25,20 @@ import java.util.List;
 @RequestMapping("/movieflix/streaming")
 @Tag(name = "Streaming", description = "Recurso responsável pelo gerenciamento dos serviços de streaming.")
 @RequiredArgsConstructor
-public class StreamingController {
+public class StreamingControllerImpl {
 
     private final StreamingService streamingService;
 
-    // Listar todas as categorias
     @GetMapping
     public ResponseEntity<List<StreamingResponse>> getAll() {
         List<Streaming> streamings = streamingService.findAll();
         List<StreamingResponse> list = streamings.stream()
                 .map(StreamingMapper::toStreamingResponse)
                 .toList();
-
-
         return ResponseEntity.ok(list);
     }
 
-
     @PostMapping
-    @Operation(summary = "Salvar streaming", description = "Método responsável por salvar streaming.",
-            security = @SecurityRequirement(name = "bearerAuth"))
-    @ApiResponse(responseCode = "201", description = "Streaming salvo com sucesso.",
-            content = @Content( schema = @Schema(implementation = MovieResponse.class)))
     public ResponseEntity<StreamingResponse> save(@Valid @RequestBody StreamingRequest request){
         Streaming newStreaming = StreamingMapper.toStreaming(request);
         Streaming savedStreaming = streamingService.save(newStreaming);
