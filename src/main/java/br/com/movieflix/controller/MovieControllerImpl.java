@@ -5,12 +5,6 @@ import br.com.movieflix.controller.response.MovieResponse;
 import br.com.movieflix.entity.Movie;
 import br.com.movieflix.mapper.MovieMapper;
 import br.com.movieflix.service.MovieService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +25,6 @@ public class MovieControllerImpl implements MovieController {
     public ResponseEntity<MovieResponse> save(@Valid @RequestBody MovieRequest request) {
         Movie savedMovie = movieService.save(MovieMapper.toMovie(request));
         return ResponseEntity.ok(MovieMapper.toMovieResponse(savedMovie));
-
     }
 
     @GetMapping
@@ -40,7 +33,6 @@ public class MovieControllerImpl implements MovieController {
                 .stream()
                 .map(MovieMapper::toMovieResponse)
                 .toList());
-
     }
 
     @GetMapping("/{id}")
@@ -64,7 +56,6 @@ public class MovieControllerImpl implements MovieController {
                 .stream()
                 .map(MovieMapper::toMovieResponse)
                 .toList());
-
     }
 
     @DeleteMapping("/{id}")
