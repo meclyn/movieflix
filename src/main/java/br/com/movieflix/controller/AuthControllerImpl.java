@@ -29,28 +29,18 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/movieflix/auth")
 @RequiredArgsConstructor
 @Tag(name = "Auth", description = "Recurso responsável pelo registro/login de usuarios.")
-public class AuthController {
+public class AuthControllerImpl implements AuthController {
 
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
 
-
-    @Operation(summary = "Registrar usuário", description = "Método responsável por registrar usuário.",
-            security = @SecurityRequirement(name = "bearerAuth"))
-    @ApiResponse(responseCode = "201", description = "Usuário registrado com sucesso.",
-            content = @Content( schema = @Schema(implementation = MovieResponse.class)))
     @PostMapping("/register")
     public ResponseEntity<UserResponse> register(@RequestBody UserRequest userRequest){
         User savedUser = userService.save(UserMapper.toUser(userRequest));
         return ResponseEntity.status(HttpStatus.CREATED).body(UserMapper.toUserResponse(savedUser));
     }
 
-
-    @Operation(summary = "Login usuário", description = "Método responsável por realizar login de usuário.",
-            security = @SecurityRequirement(name = "bearerAuth"))
-    @ApiResponse(responseCode = "200", description = "Login efetuado com sucesso.", content = @Content())
-    @ApiResponse(responseCode = "401", description = "Login ou senha inválido.", content = @Content())
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest){
         try{
