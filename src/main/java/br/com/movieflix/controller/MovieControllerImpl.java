@@ -23,14 +23,10 @@ import java.util.Optional;
 @RequestMapping("/movieflix/movie")
 @RequiredArgsConstructor
 @Tag(name = "Movie", description = "Recurso responsável pelo gerenciamento dos filmes.")
-public class MovieController {
+public class MovieControllerImpl implements MovieController {
 
     private final MovieService movieService;
 
-    @Operation(summary = "Salvar filme", description = "Método responsável por realizar o salvamento de um novo filme.",
-            security = @SecurityRequirement(name = "bearerAuth"))
-    @ApiResponse(responseCode = "201", description = "Filme salvo com sucesso.",
-    content = @Content(schema = @Schema(implementation = MovieResponse.class)))
     @PostMapping
     public ResponseEntity<MovieResponse> save(@Valid @RequestBody MovieRequest request) {
         Movie savedMovie = movieService.save(MovieMapper.toMovie(request));
@@ -38,10 +34,6 @@ public class MovieController {
 
     }
 
-    @Operation(summary = "Buscar filmes", description = "Método responsável por retornar todos os filmes cadastrados.",
-            security = @SecurityRequirement(name = "bearerAuth"))
-    @ApiResponse(responseCode = "200", description = "Retorna todos os filmes cadastrados.",
-            content = @Content(array = @ArraySchema( schema = @Schema(implementation = MovieResponse.class))))
     @GetMapping
     public ResponseEntity<List<MovieResponse>> findAll(){
         return ResponseEntity.ok(movieService.findAll()
@@ -51,12 +43,6 @@ public class MovieController {
 
     }
 
-
-    @Operation(summary = "Buscar filme por ID", description = "Método responsável por buscar filme por ID.",
-            security = @SecurityRequirement(name = "bearerAuth"))
-    @ApiResponse(responseCode = "200", description = "Filme encontrado com sucesso.",
-            content = @Content(array = @ArraySchema( schema = @Schema(implementation = MovieResponse.class))))
-    @ApiResponse(responseCode = "404", description = "Filme não encontrado.", content = @Content())
     @GetMapping("/{id}")
     public ResponseEntity<MovieResponse> findById(@PathVariable Long id) {
         return movieService.findById(id)
