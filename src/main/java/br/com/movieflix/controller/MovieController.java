@@ -2,8 +2,6 @@ package br.com.movieflix.controller;
 
 import br.com.movieflix.controller.request.MovieRequest;
 import br.com.movieflix.controller.response.MovieResponse;
-import br.com.movieflix.entity.Movie;
-import br.com.movieflix.mapper.MovieMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -20,18 +18,17 @@ import java.util.List;
 @Tag(name = "Movie", description = "Recurso responsável pelo gerenciamento dos filmes.")
 public interface MovieController {
 
-
     @Operation(summary = "Salvar filme", description = "Método responsável por salvar filme.",
             security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponse(responseCode = "201", description = "Filme salvo com sucesso.",
             content = @Content( schema = @Schema(implementation = MovieResponse.class)))
     ResponseEntity<MovieResponse> save(@Valid @RequestBody MovieRequest request);
 
+
     @Operation(summary = "Buscar filmes", description = "Método responsável por retornar todos os filmes cadastrados.",
             security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponse(responseCode = "200", description = "Retorna todos os filmes cadastrados.",
             content = @Content(array = @ArraySchema( schema = @Schema(implementation = MovieResponse.class))))
-
     ResponseEntity<List<MovieResponse>> findAll();
 
 
@@ -54,7 +51,6 @@ public interface MovieController {
     @ApiResponse(responseCode = "200", description = "Filmes encontrados com sucesso.",
             content = @Content(array = @ArraySchema( schema = @Schema(implementation = MovieResponse.class))))
     ResponseEntity<List<MovieResponse>> findByCategory(@RequestParam Long category);
-
 
 
     @Operation(summary = "Deletar filme por ID", description = "Método responsável por deletar filme por ID.",
